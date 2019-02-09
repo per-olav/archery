@@ -1,6 +1,7 @@
 #ifndef LEDMATRIX_H
 #define LEDMATRIX_H
 
+#define FASTLED_INTERNAL
 #include <FastLED.h>
 
 class LEDMatrix {

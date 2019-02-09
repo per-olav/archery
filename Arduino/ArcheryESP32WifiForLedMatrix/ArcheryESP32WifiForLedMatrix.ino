@@ -1,5 +1,10 @@
+// For board "ESP32 Dev Module" or similar
+
 #include <HardwareSerial.h>
 #include <WiFi.h>
+
+#define RX_PIN 16
+#define TX_PIN 17
 
 HardwareSerial serial2(2);
 
@@ -8,8 +13,6 @@ WiFiServer server(80);
 
 // String to store the HTTP request
 String request;
-
-long sessionID;
 
 const char* ssid     = "Archer Counter";
 const char* password = "123456789";
@@ -26,7 +29,7 @@ const char* password = "123456789";
   "</style>" \
   "</head>"
 
-#define START_BUTTON "<a href=\"start?ID=XXXXX\"><button class=\"button\">START</button></a>"
+#define START_BUTTON "<a href=\"start\"><button class=\"button\">START</button></a>"
 #define STOP_BUTTON "<a href=\"stop\"><button class=\"button\">STOP</button></a>"
 
 #define ARROWS_BUTTONS "<a href=\"A1\"><button class=\"numbutton\">1</button></a>&nbsp &nbsp &nbsp" \
@@ -35,10 +38,6 @@ const char* password = "123456789";
   "<a href=\"A4\"><button class=\"numbutton\">4</button></a>&nbsp &nbsp &nbsp" \
   "<a href=\"A5\"><button class=\"numbutton\">5</button></a>&nbsp &nbsp &nbsp" \
   "<a href=\"A6\"><button class=\"numbutton\">6</button></a>"
-
-long createSessionID() {
-  return random(10000, 99999);
-}
 
 void setFixedIP() {
   IPAddress ip(10, 10, 10, 10);
@@ -60,9 +59,8 @@ void wifiEventHandler(WiFiEvent_t event) {
 }
 
 void setup() {
-  sessionID = createSessionID();
   Serial.begin(115200);
-  serial2.begin(9600, SERIAL_8N1, 16, 17);
+  serial2.begin(9600, SERIAL_8N1, RX_PIN, TX_PIN);
 
   // Delete old wifi config
   WiFi.disconnect(true);

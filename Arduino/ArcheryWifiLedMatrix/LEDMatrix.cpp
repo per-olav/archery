@@ -49,7 +49,7 @@ void LEDMatrix::showCharacterHSV(unsigned char c, float x_pos, int hue, int sat,
     unsigned char fontCol = Font5x7[ind0 + x];
     unsigned char p = 1;
 
-    for (int y = 0; y < sizeY; y++) {
+    for (int y = 0; y < sizeY-1; y++) {
 
       int isOn = ((int)(fontCol & p) != 0);
       int px = pixel(x_pos + x, y);
@@ -106,4 +106,3 @@ void LEDMatrix::drawRectangleHSV(int x0, int y0, int width, int height, int hue,
     }
   }
 }
-
